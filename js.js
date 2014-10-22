@@ -6,7 +6,7 @@ function startGoingCrazy(id) {
     var g = Math.floor(Math.random() * 255);
     var b = Math.floor(Math.random() * 255);
     el.css('backgroundColor', 'rgb(' + r + ',' + g + ',' + b + ')');
-  }, 150);
+  }, 100);
 }
 
 function getId() {
@@ -40,22 +40,23 @@ function rainback(event) {
 
   $('body').append(rainEl);
   startGoingCrazy(id);
+
+  $('#' + id).on('mouseup', function(event) {
+    event.stopPropagation();
+  });
+
+  $(document).on('mouseup', function() {
+    teardownTheRain();
+  });
 }
 
 function teardownTheRain() {
   $('.rainback').remove();
 }
 
-function handleClick(event) {
-  var el = $(event.target);
-
-  if (!el.closest('select').length) {
-    teardownTheRain();
-  }
-}
-
 $(document).ready(function() {
   $('select').on('mousedown', rainback);
-  $(document).on('mousedown', handleClick);
-  $('select').change(function() { teardownTheRain() });
+  $('select').change(function() {
+    teardownTheRain();
+  });
 });
