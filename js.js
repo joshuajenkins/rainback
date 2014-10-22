@@ -54,9 +54,16 @@ function teardownTheRain() {
   $('.rainback').remove();
 }
 
+function isYosemite() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  return /mac os x 10_10/.test(userAgent);
+}
+
 $(document).ready(function() {
-  $('select').on('mousedown', rainback);
-  $('select').change(function() {
-    teardownTheRain();
-  });
+  if (isYosemite()) {
+    $('select').on('mousedown', rainback);
+    $('select').change(function() {
+      teardownTheRain();
+    });
+  }
 });
