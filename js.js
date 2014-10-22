@@ -17,7 +17,10 @@ function rainback(event) {
   var el = $(event.target);
   var children = el.children('option').length;
   var fontSize = parseInt(el.css('font-size'));
+  var selectedIndex = el.children('option:selected').index();
   var offset = {top: el.offset().top, left: el.offset().left };
+  
+  offset.top = offset.top - (selectedIndex * fontSize * 1.4);
 
   var rainEl = $('<div />');
   var id = 'rainback-' + getId();
@@ -43,7 +46,16 @@ function teardownTheRain() {
   $('.rainback').remove();
 }
 
+function handleClick(event) {
+  var el = $(event.target);
+
+  if (!el.closest('select').length) {
+    teardownTheRain();
+  }
+}
+
 $(document).ready(function() {
   $('select').on('mousedown', rainback);
-  $('select').on('blur', teardownTheRain);
+  $(document).on('mousedown', handleClick);
+  $('select').change(function() { teardownTheRain() });
 });
